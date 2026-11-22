@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.env
+*.pyc
+
+# Node
+node_modules/
+dist/
+.env.local
+
+# Firebase
+firebase-service-account.json
+.firebase/
+
+# Vector DB
+backend/data/chroma_db/
+
+# IDE & Logs
+.vscode/
+.idea/
+.DS_Store
+*.log
