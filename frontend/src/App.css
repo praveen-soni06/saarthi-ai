@@ -1,0 +1,155 @@
+.typing-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: #94a3b8;
+  animation: typing-bounce 1s infinite ease-in-out;
+}
+
+.animation-delay-150 {
+  animation-delay: 150ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+@keyframes typing-bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+
+  30% {
+    transform: translateY(-4px);
+  }
+}
+
+.campus-map {
+  background-image:
+    linear-gradient(28deg, transparent 48%, rgba(255, 255, 255, 0.9) 49%, rgba(255, 255, 255, 0.9) 52%, transparent 53%),
+    linear-gradient(122deg, transparent 45%, rgba(255, 255, 255, 0.8) 46%, rgba(255, 255, 255, 0.8) 49%, transparent 50%),
+    radial-gradient(ellipse at 18% 82%, #d7e9d8 0 11%, transparent 11.5%),
+    radial-gradient(ellipse at 83% 18%, #d7e9d8 0 13%, transparent 13.5%);
+}
+
+.map-road {
+  position: absolute;
+  z-index: 0;
+  border: 7px solid rgba(255, 255, 255, 0.92);
+  border-radius: 999px;
+}
+
+.map-road-one {
+  top: 21%;
+  left: -12%;
+  width: 125%;
+  height: 42%;
+  transform: rotate(-15deg);
+}
+
+.map-road-two {
+  top: 34%;
+  left: 18%;
+  width: 95%;
+  height: 48%;
+  transform: rotate(45deg);
+}
+
+.map-road-three {
+  top: 12%;
+  left: 41%;
+  width: 58%;
+  height: 90%;
+  transform: rotate(-48deg);
+}
+
+.map-block {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  background: rgba(207, 220, 212, 0.9);
+  color: #64746a;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.map-block-one {
+  top: 21%;
+  left: 15%;
+  width: 82px;
+  height: 62px;
+}
+
+.map-block-two {
+  top: 56%;
+  left: 54%;
+  width: 96px;
+  height: 70px;
+  background: rgba(194, 215, 198, 0.94);
+}
+
+.map-block-three {
+  top: 17%;
+  right: 12%;
+  width: 78px;
+  height: 60px;
+}
+
+.map-route {
+  position: absolute;
+  z-index: 2;
+  top: 28%;
+  left: 25%;
+  width: 47%;
+  height: 40%;
+  border: 3px dashed #6366f1;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-radius: 55% 0 0;
+  transform: rotate(14deg);
+}
+
+.map-pin {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  filter: drop-shadow(0 2px 2px rgba(15, 23, 42, 0.15));
+}
+
+.map-pin-stop {
+  top: 32%;
+  left: 23%;
+  color: #4f46e5;
+}
+
+.map-pin-stop span {
+  border-radius: 5px;
+  background: white;
+  padding: 3px 6px;
+  color: #334155;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.map-pin-bus {
+  top: 57%;
+  left: 65%;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  background: #4f46e5;
+  color: white;
+  box-shadow: 0 0 0 5px rgba(99, 102, 241, 0.16);
+}
