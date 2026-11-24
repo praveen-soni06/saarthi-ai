@@ -1,11 +1,12 @@
-from pydantic import BaseModel
-from typing import List
+from pydantic import BaseModel, Field
+
 
 class ChatRequest(BaseModel):
     question: str
     userId: str
 
+
 class ChatResponse(BaseModel):
     answer: str
-    source: str # college | general | web
-    sources: List[str] = []
+    source: str
+    sources: list[str] = Field(default_factory=list)

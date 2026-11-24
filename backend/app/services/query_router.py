@@ -1,12 +1,13 @@
-# backend/app/services/query_router.py
+import re
+
+_COLLEGE_QUERY_PATTERN = re.compile(
+    r"\b(?:exam|fees|syllabus|notice|date|college|holiday)\b",
+    re.IGNORECASE,
+)
+
 
 def classify_query(question: str) -> str:
-    # Abhi ke liye simple keyword matching
-    college_keywords = ["exam", "syllabus", "notice", "date", "college", "fees", "holiday"]
-    
-    question_lower = question.lower()
-    for word in college_keywords:
-        if word in question_lower:
-            return "COLLEGE"
-            
+    """Classify college-related questions using a small keyword set."""
+    if _COLLEGE_QUERY_PATTERN.search(question):
+        return "COLLEGE"
     return "GENERAL"
