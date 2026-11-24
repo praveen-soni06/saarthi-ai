@@ -1,7 +1,7 @@
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    GEMINI_API_KEY: str
+    GEMINI_API_KEY: str = ""
     FIREBASE_CREDENTIALS_PATH: str = "./firebase-service-account.json"
     ALLOWED_ORIGINS: list[str] = ["http://localhost:5173"]
     GOOGLE_MAPS_API_KEY: str = ""
