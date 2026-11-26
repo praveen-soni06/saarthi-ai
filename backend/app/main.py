@@ -1,9 +1,20 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.core.config import settings
-from app.api import chat  # <--- Yeh line add karo
 
-app = FastAPI(title="SAARTHI AI Backend", version="1.0.0")
+from app.core.config import settings
+from app.core.database import create_database_tables
+from app.api import chat
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    create_database_tables()
+    yield
+
+
+app = FastAPI(title="SAARTHI AI Backend", version="1.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -11,10 +22,12 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["X-Thread-Id"],
 )
 
-# Router connect karo
 app.include_router(chat.router, prefix="/chat", tags=["Chatbot"])
+app.include_router(chat.threads_router, tags=["Chat history"])
+
 
 @app.get("/")
 def root():

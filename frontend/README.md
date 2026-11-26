@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-The chat page sends `POST /chat/` requests to `http://localhost:8000` by default. Set `VITE_API_URL` in a frontend `.env` file to use another backend origin:
+The chat page sends `POST /chat/` requests to `http://localhost:8000` by default. Chat threads and messages are persisted by the backend in its SQLite `saarthi.db` database. Set `VITE_API_URL` in a frontend `.env` file to use another backend origin:
 
 ```sh
 VITE_API_URL=http://localhost:8000
