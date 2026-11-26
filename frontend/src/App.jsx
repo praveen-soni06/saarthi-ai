@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
-import axios from 'axios'
+import { useState } from 'react'
 import {
   ArrowDownLeft,
   ArrowRight,
@@ -14,11 +13,9 @@ import {
   MapPin,
   MessageCircle,
   Plus,
-  Send,
   Sparkles,
   Users,
   Wallet,
-  Paperclip,
 } from 'lucide-react'
 import {
   BrowserRouter,
@@ -31,6 +28,7 @@ import {
   useNavigate,
 } from 'react-router-dom'
 import './App.css'
+import ChatPage from './features/chatbot/ChatPage'
 
 const navigation = [
   { label: 'Dashboard', path: '/dashboard', icon: Home },
@@ -184,11 +182,11 @@ function AppLayout() {
               aria-expanded={menuOpen}
             >
               <span className="grid size-9 place-items-center rounded-full bg-indigo-100 text-sm font-semibold text-indigo-700">
-                AS
+                PS
               </span>
               <span className="hidden text-left sm:block">
                 <span className="block text-sm font-semibold leading-4 text-slate-800">
-                  Aanya Sharma
+                  Praveen Soni
                 </span>
                 <span className="text-xs text-slate-500">Student</span>
               </span>
@@ -247,7 +245,7 @@ function Dashboard() {
     <>
       <PageHeading
         eyebrow={today}
-        title="Good morning, Aanya!"
+        title="Good morning, Praveen!"
         description="Here’s what’s happening around your campus today."
       />
       <section aria-label="Campus tools" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -329,137 +327,6 @@ function Dashboard() {
         </section>
       </div>
     </>
-  )
-}
-
-function Chat() {
-  const [messages, setMessages] = useState([
-    {
-      id: 'welcome',
-      role: 'assistant',
-      content: 'Hi Aanya! I’m Saarthi, your campus assistant. What can I help you with today?',
-    },
-  ])
-  const [question, setQuestion] = useState('')
-  const [isTyping, setIsTyping] = useState(false)
-  const [error, setError] = useState('')
-  const listRef = useRef(null)
-
-  useEffect(() => {
-    if (listRef.current) listRef.current.scrollTop = listRef.current.scrollHeight
-  }, [messages, isTyping])
-
-  async function sendMessage(event) {
-    event.preventDefault()
-    const text = question.trim()
-    if (!text || isTyping) return
-
-    setMessages((current) => [...current, { id: crypto.randomUUID(), role: 'user', content: text }])
-    setQuestion('')
-    setError('')
-    setIsTyping(true)
-
-    try {
-      const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
-      const { data } = await axios.post(`${baseURL}/chat/`, {
-        question: text,
-        userId: 'demo-student',
-      })
-      if (typeof data.answer !== 'string' || !data.answer.trim()) {
-        throw new Error('The assistant returned an empty response. Please try again.')
-      }
-      setMessages((current) => [
-        ...current,
-        { id: crypto.randomUUID(), role: 'assistant', content: data.answer },
-      ])
-    } catch (requestError) {
-      setError(
-        requestError.response?.data?.detail ||
-          requestError.message ||
-          'Could not reach Saarthi. Please try again.',
-      )
-    } finally {
-      setIsTyping(false)
-    }
-  }
-
-  return (
-    <div className="flex min-h-[calc(100dvh-11rem)] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:min-h-[calc(100dvh-9rem)]">
-      <div className="flex items-center gap-3 border-b border-slate-100 px-5 py-4">
-        <span className="grid size-10 place-items-center rounded-xl bg-indigo-600 text-white">
-          <Sparkles size={19} />
-        </span>
-        <div>
-          <h1 className="text-sm font-semibold text-slate-900">Campus AI</h1>
-          <p className="mt-0.5 flex items-center gap-1.5 text-xs text-slate-500">
-            <span className="size-1.5 rounded-full bg-emerald-500" /> Here to help
-          </p>
-        </div>
-      </div>
-      <div ref={listRef} className="flex-1 space-y-5 overflow-y-auto p-4 sm:p-6">
-        {messages.map(({ id, role, content }) => (
-          <div key={id} className={`flex ${role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div
-              className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-6 sm:max-w-[75%] ${
-                role === 'user'
-                  ? 'rounded-br-md bg-indigo-600 text-white'
-                  : 'rounded-bl-md bg-slate-100 text-slate-700'
-              }`}
-            >
-              {content}
-            </div>
-          </div>
-        ))}
-        {isTyping && (
-          <div className="flex justify-start">
-            <div className="flex items-center gap-2 rounded-2xl rounded-bl-md bg-slate-100 px-4 py-3 text-sm text-slate-500">
-              <span className="flex gap-1" aria-hidden="true">
-                <i className="typing-dot" />
-                <i className="typing-dot animation-delay-150" />
-                <i className="typing-dot animation-delay-300" />
-              </span>
-              Saarthi is typing
-            </div>
-          </div>
-        )}
-      </div>
-      <div className="border-t border-slate-100 p-3 sm:p-4">
-        {error && (
-          <p role="alert" className="mx-auto mb-2 max-w-4xl rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700">
-            {error}
-          </p>
-        )}
-        <form onSubmit={sendMessage} className="mx-auto flex max-w-4xl items-center gap-2">
-          <button
-            type="button"
-            title="File attachments are not available yet"
-            aria-label="File attachments are not available yet"
-            onClick={() => setError('File attachments are not supported by the current chat API yet.')}
-            className="grid size-10 shrink-0 place-items-center rounded-xl text-slate-500 hover:bg-slate-100"
-          >
-            <Paperclip size={19} />
-          </button>
-          <input
-            value={question}
-            onChange={(event) => setQuestion(event.target.value)}
-            placeholder="Ask anything about your campus..."
-            aria-label="Your message"
-            className="h-11 min-w-0 flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-50"
-          />
-          <button
-            type="submit"
-            disabled={!question.trim() || isTyping}
-            aria-label="Send message"
-            className="grid size-11 shrink-0 place-items-center rounded-xl bg-indigo-600 text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <Send size={17} />
-          </button>
-        </form>
-        <p className="mt-2 text-center text-[11px] text-slate-400">
-          Saarthi AI can make mistakes. Check important information with your college.
-        </p>
-      </div>
-    </div>
   )
 }
 
@@ -729,7 +596,7 @@ function App() {
         <Route element={<AppLayout />}>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat" element={<ChatPage />} />
           <Route path="/groups" element={<Groups />} />
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/bus" element={<BusTracking />} />
